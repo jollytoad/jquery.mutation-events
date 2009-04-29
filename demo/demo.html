@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Mutation Events Demo</title>
+
+	<link rel="stylesheet" href="aria.css" type="text/css" />
+	
+	<script type="text/javascript" src="../test/include/jquery.js"></script>
+	<script type="text/javascript" src="../src/jquery.mutations.js"></script>
+	<script type="text/javascript" src="demo.js"></script>
+</head>
+<body>
+
+	<h1>Mutation Events Demo</h1>
+	
+	<ul role="tablist" title="Blah blah">
+		<li role="tab" id="tab1" aria-controls="tabpanelA">Tab 1</li>
+		<li role="tab" id="tab2" aria-controls="tabpanelB">Tab 2</li>
+		<li role="tab" id="tab3" aria-controls="tabpanelC" aria-disabled="true">Tab 3</li>
+		<li role="tab" id="tab4" aria-controls="tabpanelD">Tab 4</li>
+	</ul>
+	
+	<div role="tabpanel" id="tabpanelA" aria-hidden="true">
+		<p>Tabpanel A</p>
+	</div>
+	
+	<div role="tabpanel" id="tabpanelB" aria-hidden="true">
+		<p>Tabpanel B</p>
+	</div>
+	
+	<div role="tabpanel" id="tabpanelC" aria-hidden="true">
+		<p>Tabpanel C - You should not see this!</p>
+	</div>
+	
+	<div role="tabpanel" id="tabpanelD" aria-hidden="true">
+		<p>Tabpanel D</p>
+	</div>
+	
+</body>
+</html>
+
