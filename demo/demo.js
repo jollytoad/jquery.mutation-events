@@ -50,7 +50,9 @@ jQuery(function($) {
 		
 		.bind('attr', function(event) {
 			if ( this === event.target && event.attrName === 'tabindex' ) {
-				idrefs( $.attr(this, 'aria-controls') ).attr( 'aria-hidden', !!parseInt(event.newValue) );
+				var selected = !parseInt(event.newValue);
+				$(this).toggleClass('selected', selected);
+				idrefs( $.attr(this, 'aria-controls') ).attr( 'aria-hidden', !selected );
 			}
 		})
 		
@@ -66,9 +68,13 @@ jQuery(function($) {
 				case 35: $(this).siblings('[role~=tab]:last').focus(); return false; // END
 			}
 		});
+	
+	$('button[data-selector][data-activate]')
+		.bind('click', function() {
+			$( $.attr(this, 'data-selector') ).attr( 'aria-activedescendant', $.attr(this, 'data-activate') );
+		});
 
-	$('[role~=tabpanel]').attr('tabindex', 0);
-
+	// Focus the first tab
 	$('[role~=tab]:first').focus();
 });
 

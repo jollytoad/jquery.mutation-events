@@ -8,6 +8,10 @@
 	<script type="text/javascript" src="../test/include/jquery.min.js"></script>
 	<script type="text/javascript" src="../src/jquery.mutations.js"></script>
 	<script type="text/javascript" src="demo.js"></script>
+	
+	<style>
+		.selected { background-color: yellow; }
+	</style>
 </head>
 <body>
 
@@ -20,19 +24,21 @@
 		<li role="tab" id="tab4" aria-controls="tabpanelD">Tab 4</li>
 	</ul>
 	
-	<div role="tabpanel" id="tabpanelA" aria-hidden="true">
+	<div role="tabpanel" id="tabpanelA" aria-hidden="true" tabindex="0">
 		<p>Tabpanel A</p>
 	</div>
 	
-	<div role="tabpanel" id="tabpanelB" aria-hidden="true">
+	<div role="tabpanel" id="tabpanelB" aria-hidden="true" tabindex="0">
 		<p>Tabpanel B</p>
+		
+		<button data-selector="[role~=tablist]" data-activate="tab1">Back to Tab 1</button>
 	</div>
 	
-	<div role="tabpanel" id="tabpanelC" aria-hidden="true">
+	<div role="tabpanel" id="tabpanelC" aria-hidden="true" tabindex="0">
 		<p>Tabpanel C - You should not see this!</p>
 	</div>
 	
-	<div role="tabpanel" id="tabpanelD" aria-hidden="true">
+	<div role="tabpanel" id="tabpanelD" aria-hidden="true" tabindex="0">
 		<p>Tabpanel D</p>
 	</div>
 	
