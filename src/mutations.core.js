@@ -76,12 +76,36 @@ m = $.mutations = {
 		
 		function special( eventType, stage ) {
 			$.event.special[eventType] = {
-				add: function() {
+				add: function(handler, data, namespaces) {
+					console.log('add %s:', eventType, this, arguments);
+					
 					// Call the setup on the first binding
 					if ( !(opts.pre + opts.post) ) {
 						opts.setup();
 					}
 					opts[stage]++;
+					
+					// If any namespaces are given prefixed with @ then limit
+					// the handler to the target element and attrNames specified
+					// by the @-prefixed names.
+					if ( namespaces.length ) {
+						var attrNames = {}, proxy;
+						
+						$.each(namespaces, function() {
+							if ( '@' === this.charAt(0) ) {
+								attrNames[this.substring(1)] = true;
+								proxy = true;
+							}
+						});
+						
+						if ( proxy ) {
+							return function(event) {
+								if ( this === event.target && attrNames[event.attrName] ) {
+									return handler.apply(this, arguments);
+								}
+							};
+						}
+					}
 				},
 		
 				remove: function() {

@@ -27,25 +27,21 @@ jQuery(function($) {
 	
 	$('[role~=tablist]')
 		// Listen for attribute changes
-		.bind('pre-attr', function(event) {
-			if ( this === event.target && event.attrName === 'aria-activedescendant' ) {
-				var sel = idrefs( event.newValue ).not('[aria-disabled=true]');
-				if ( sel.length ) {
-					// Fix the value
-					event.newValue = ids( sel );
-				} else {
-					// A valid/enabled tab id was not given
-					event.preventDefault();
-				}
+		.bind('pre-attr.@aria-activedescendant', function(event) {
+			var sel = idrefs( event.newValue ).not('[aria-disabled=true]');
+			if ( sel.length ) {
+				// Fix the value
+				event.newValue = ids( sel );
+			} else {
+				// A valid/enabled tab id was not given
+				event.preventDefault();
 			}
 		})
-		.bind('attr', function(event) {
-			if ( this === event.target && event.attrName === 'aria-activedescendant' ) {
-				// Deselect previously selected tab
-				idrefs( event.prevValue ).attr('tabindex', -1);
-				// Select new tab
-				idrefs( event.newValue ).attr('tabindex', 0);
-			}
+		.bind('attr.@aria-activedescendant', function(event) {
+			// Deselect previously selected tab
+			idrefs( event.prevValue ).attr('tabindex', -1);
+			// Select new tab
+			idrefs( event.newValue ).attr('tabindex', 0);
 		});
 
 	$('[role~=tab]')
@@ -53,11 +49,9 @@ jQuery(function($) {
 		.attr('tabindex', -1)
 		
 		.bind('attr', function(event) {
-			if ( this === event.target && event.attrName === 'tabindex' ) {
-				var selected = !parseInt(event.newValue);
-				$(this).toggleClass('selected', selected);
-				idrefs( $.attr(this, 'aria-controls') ).attr( 'aria-hidden', !selected );
-			}
+			var selected = !parseInt(event.newValue);
+			$(this).toggleClass('selected', selected);
+			idrefs( $.attr(this, 'aria-controls') ).attr( 'aria-hidden', !selected );
 		})
 		
 		.bind('focus', function(event) {
