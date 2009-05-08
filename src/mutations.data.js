@@ -42,7 +42,8 @@ $.mutations.register({
 				
 			} else if ( newValue !== prevValue ) {
 				
-				return trigger( elem, 'data', name, prevValue, newValue,
+				return trigger( elem, 'data',
+					{ attrName: name, prevValue: prevValue, newValue: newValue },
 					function( event ) {
 						data( event.target, event.attrName, event.newValue );
 					}
@@ -55,7 +56,8 @@ $.mutations.register({
 				return removeData( elem, name );
 			}
 
-			return trigger( elem, 'data', name, data(elem, name), undefined,
+			return trigger( elem, 'data',
+				{ attrName: name, prevValue: data(elem, name), attrChange: $.mutations.REMOVAL },
 				function(event) {
 					if ( event.attrChange === $.mutations.REMOVAL ) {
 						removeData( event.target, event.attrName );
@@ -63,7 +65,8 @@ $.mutations.register({
 						// The event handler wants the data modified rather than removed
 						data( event.target, event.attrName, event.newValue );
 					}
-				});
+				}
+			);
 		};
 	},
 	

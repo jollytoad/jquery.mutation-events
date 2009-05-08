@@ -40,7 +40,11 @@ $.mutations.register({
 				
 			} else if ( ""+newValue !== ""+prevValue ) {
 				
-				return trigger( elem, 'attr', name, prevValue, newValue === "" ? undefined : newValue,
+				return trigger( elem, 'attr', {
+						attrName: name,
+						prevValue: prevValue,
+						newValue: newValue === "" ? undefined : newValue
+					},
 					function( event ) {
 						attr( event.target, event.attrName, event.newValue );
 					}
@@ -59,7 +63,7 @@ $.mutations.register({
 	init: function( elem, name ) {
 		var value = this._attr(elem);
 		if ( value !== undefined ) {
-			$.trigger($.mutation.event('attr', name, undefined, value), undefined, elem);
+			$.trigger($.mutations.event('attr', { attrName: name, newValue: value }), undefined, elem);
 		}	
 	}
 });

@@ -31,7 +31,8 @@ $.mutations.register({
 				var prevValue = val.apply([this]);
 				
 				if ( newValue !== prevValue ) {
-					trigger( this, 'val', undefined, newValue, prevValue,
+					trigger( this, 'val',
+						{ newValue: newValue, prevValue: prevValue},
 						function( event ) {
 							val.call( $(event.target), event.newValue );
 						}
