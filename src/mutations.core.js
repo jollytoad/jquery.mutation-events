@@ -77,7 +77,6 @@ m = $.mutations = {
 		function special( eventType, stage ) {
 			$.event.special[eventType] = {
 				add: function(handler, data, namespaces) {
-					console.log('add %s:', eventType, this, arguments);
 					
 					// Call the setup on the first binding
 					if ( !(opts.pre + opts.post) ) {
