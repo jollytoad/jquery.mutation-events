@@ -14,7 +14,7 @@ $.mutations.register({
 	// "pre-" is prepended to this for the pre-mutation event.
 	type: 'data',
 	
-	// The blacklist can hold attributes that should never trigger an event
+	// The blacklist holds data item names that should never trigger an event
 	blacklist: {'events':true, 'handle':true, 'olddisplay':true },
 	
 	// Hook into jQuery when an event of this type is first bound

@@ -19,7 +19,7 @@ jQuery(function($) {
 	
 	// Log attr mutation events in the console (if available)
 	if ( window.console && window.console.log ) {
-		$(document).bind('attr', function(event) {
+		$(document).bind('pre-attr attr', function(event) {
 			var notice = event.isDefaultPrevented() ? 'DefaultPrevented ' : '';
 			console.log('%s%s %s: %s -> %s %o', notice, event.type, event.attrName, event.prevValue, event.newValue, event.target);
 		});
@@ -27,20 +27,24 @@ jQuery(function($) {
 	
 	$('[role~=tablist]')
 		// Listen for attribute changes
-		.bind('attr', function(event) {
+		.bind('pre-attr', function(event) {
 			if ( this === event.target && event.attrName === 'aria-activedescendant' ) {
 				var sel = idrefs( event.newValue ).not('[aria-disabled=true]');
-				if ( sel.length > 0 ) {
-					// Deselect previously selected tab
-					idrefs( event.prevValue ).attr('tabindex', -1);
-					// Select new tab
-					sel.attr('tabindex', 0);
+				if ( sel.length ) {
 					// Fix the value
 					event.newValue = ids( sel );
 				} else {
 					// A valid/enabled tab id was not given
 					event.preventDefault();
 				}
+			}
+		})
+		.bind('attr', function(event) {
+			if ( this === event.target && event.attrName === 'aria-activedescendant' ) {
+				// Deselect previously selected tab
+				idrefs( event.prevValue ).attr('tabindex', -1);
+				// Select new tab
+				idrefs( event.newValue ).attr('tabindex', 0);
 			}
 		});
 

@@ -24,8 +24,7 @@ $.mutations.register({
 			trigger = $.mutations.trigger;
 		
 		// Save the original $.attr function
-		this.original = attr;
-		
+		this._attr = attr;
 		
 		// Override $.attr
 		$.attr = function( elem, name, newValue, silent ) {
@@ -52,8 +51,16 @@ $.mutations.register({
 	
 	// Remove hooks once all events of this type have been unbound
 	teardown: function() {
-		$.attr = this.original;
-		delete this.original;
+		$.attr = this._attr;
+		delete this._attr;
+	},
+	
+	// Force an event to be trigger - useful for initialisation
+	init: function( elem, name ) {
+		var value = this._attr(elem);
+		if ( value !== undefined ) {
+			$.trigger($.mutation.event('attr', name, undefined, value), undefined, elem);
+		}	
 	}
 });
 

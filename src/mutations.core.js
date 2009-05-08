@@ -37,7 +37,7 @@ m = $.mutations = {
 	// cancel the mutation using event.preventDefault(), it may also modify
 	// the mutation by setting the event fields.
 	trigger: function( elem, eventType, attrName, prevValue, newValue, commit ) {
-		var event = m.event('pre-' + eventType, attrName, prevValue, newValue),
+		var event = m.event('pre-' + eventType, attrName || eventType, prevValue, newValue),
 			ret;
 
 //		console.log('trigger %s %s: %o -> %o %o', event.type, event.attrName, event.prevValue, event.newValue, elem);
@@ -81,14 +81,28 @@ m = $.mutations = {
 				}
 			}
 		};
-	},
-	
-	unregister: function( type ) {
-		delete $.event.special['pre-'+type];
-		delete $.event.special[type];
-		delete this[type];
 	}
 };
+
+$.fn.extend({
+	// Trigger a fake mutation event for initialisation
+	initMutation: function( type, names ) {
+		var self = this, opts = m.type[type];
+		
+		if ( opts && opts.init && opts.usage ) {
+			var init = opts.init;
+			if ( names === undefined ) {
+				self.each(function() { init(this); });
+			} else {
+				$.each(names.split(/\s+/), function(n, name) {
+					self.each(function() { init(this, name); });
+				});
+			}
+		}
+		
+		return this;
+	}
+});
 
 })(jQuery));
 
