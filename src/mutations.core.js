@@ -85,7 +85,7 @@ m = $.mutations = {
 					opts[stage]++;
 					
 					// If any namespaces are given prefixed with @ then limit
-					// the handler to the target element and attrNames specified
+					// the handler to the bound element and attrNames specified
 					// by the @-prefixed names.
 					if ( namespaces.length ) {
 						var attrNames = {}, proxy;
