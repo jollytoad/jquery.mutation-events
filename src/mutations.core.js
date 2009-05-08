@@ -38,16 +38,24 @@ m = $.mutations = {
 	// the mutation by setting the event fields.
 	trigger: function( elem, eventType, attrName, prevValue, newValue, commit ) {
 		var event = m.event('pre-' + eventType, attrName || eventType, prevValue, newValue),
+			opts = m.type[eventType],
 			ret;
 
-//		console.log('trigger %s %s: %o -> %o %o', event.type, event.attrName, event.prevValue, event.newValue, elem);
-
-		$.event.trigger( event, undefined, elem );
+		if ( opts.pre ) {
+//			console.log('trigger %s %s: %o -> %o %o', event.type, event.attrName, event.prevValue, event.newValue, elem);
+			$.event.trigger( event, undefined, elem );
+		} else {
+			event.target = elem;
+		}
 		
 		if ( !event.isDefaultPrevented() ) {
 			event.type = eventType;
 			ret = commit(event);
-			$.event.trigger( event, undefined, event.target );
+			
+			if ( opts.post ) {
+//				console.log('trigger %s %s: %o -> %o %o', event.type, event.attrName, event.prevValue, event.newValue, event.target);
+				$.event.trigger( event, undefined, event.target );
+			}
 		}
 		
 		return ret;
@@ -60,27 +68,34 @@ m = $.mutations = {
 		m.type[opts.type] = opts;
 		
 		// Track how many bindings we have for this event type
-		opts.usage = 0;
-		
+		opts.pre = 0;
+		opts.post = 0;
+
 		// Register the pre/post mutation event types as special event type
-		// so we can hook into jQuery on the first binding of this type
-		$.event.special['pre-'+opts.type] =
-		$.event.special[opts.type] = {
+		// so we can hook into jQuery on the first binding of this type		
 		
-			add: function() {
-				// Call the setup on the first binding
-				if ( !opts.usage++ ) {
-					opts.setup();
-				}
-			},
+		function special( eventType, stage ) {
+			$.event.special[eventType] = {
+				add: function() {
+					// Call the setup on the first binding
+					if ( !(opts.pre + opts.post) ) {
+						opts.setup();
+					}
+					opts[stage]++;
+				},
 		
-			remove: function() {
-				// Call teardown when last binding is removed
-				if ( !--opts.usage ) {
-					opts.teardown();
+				remove: function() {
+					// Call teardown when last binding is removed
+					opts[stage]--;
+					if ( !(opts.pre + opts.post) ) {
+						opts.teardown();
+					}
 				}
-			}
-		};
+			};
+		}
+		
+		special('pre-'+opts.type, 'pre');
+		special(opts.type, 'post');
 	}
 };
 
