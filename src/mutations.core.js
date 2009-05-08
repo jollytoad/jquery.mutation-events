@@ -15,12 +15,16 @@ m = $.mutations = {
 	REMOVAL:		3,
 	ADDITION:		2,
 	MODIFICATION:	1,
+	INIT:			-1,
+	
+	// pre-mutation event prefix
+	pre: 'pre-',
 
 	// Construct a new mutation event
 	event: function( type, params ) {
 		var event = $.extend(new $.Event( type ), params);
 		
-		if ( !event.attrChange ) {
+		if ( event.attrChange === undefined ) {
 			event.attrChange =
 				event.newValue === null || event.newValue === undefined   ? m.REMOVAL :
 				event.prevValue === null || event.prevValue === undefined ? m.ADDITION :
@@ -34,7 +38,7 @@ m = $.mutations = {
 	// cancel the mutation using event.preventDefault(), it may also modify
 	// the mutation by setting the event fields.
 	trigger: function( elem, eventType, eventParams, commit ) {
-		var event = m.event( 'pre-' + eventType, eventParams ),
+		var event = m.event( m.pre + eventType, eventParams ),
 			opts = m.type[eventType],
 			ret;
 		
@@ -114,7 +118,7 @@ m = $.mutations = {
 			};
 		}
 		
-		special('pre-'+opts.type, 'pre');
+		special(m.pre + opts.type, 'pre');
 		special(opts.type, 'post');
 	}
 };
@@ -124,13 +128,12 @@ $.fn.extend({
 	initMutation: function( type, names ) {
 		var self = this, opts = m.type[type];
 		
-		if ( opts && opts.init && opts.usage ) {
-			var init = opts.init;
+		if ( opts && opts.init && opts.post ) {
 			if ( names === undefined ) {
-				self.each(function() { init(this); });
+				self.each(function() { opts.init(this); });
 			} else {
 				$.each(names.split(/\s+/), function(n, name) {
-					self.each(function() { init(this, name); });
+					self.each(function() { opts.init(this, name); });
 				});
 			}
 		}

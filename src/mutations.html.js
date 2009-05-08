@@ -1,5 +1,5 @@
 /*
- * jQuery.fn.val Mutation Events @VERSION
+ * jQuery.fn.html Mutation Events @VERSION
  *
  * Copyright (c) 2009 Adaptavist.com Ltd
  * Dual licensed under the MIT (MIT-LICENSE.txt)
@@ -10,43 +10,37 @@
 (jQuery.mutations && (function($) {
 
 $.mutations.register({
-	type: 'val',
+	type: 'html',
 	
 	setup: function() {
-		var opts = this,
-			val = $.fn.val,
+		var html = $.fn.html,
 			trigger = $.mutations.trigger;
 		
-		this._val = val;
+		this._html = html;
 		
-		$.fn.val = function( newValue, silent ) {
+		$.fn.html = function( newValue, silent ) {
 			if ( newValue === undefined ) {
-				return val.apply(this);
+				return html.apply(this);
 			}
 			
 			if ( silent ) {
-				return val.call( this, newValue );
+				return html.call( this, newValue );
 			}
 			
 			return this.each(function() {
-				var prevValue = val.apply([this]);
-				
-				if ( newValue !== prevValue ) {
-					trigger( this, opts.type,
-						{ newValue: newValue, prevValue: prevValue},
-						function( event ) {
-							val.call( $(event.target), event.newValue );
-						}
-					);
-				}
+				trigger( this, 'html',
+					{ newValue: newValue, attrChange: $.mutations.MODIFICATION },
+					function( event ) {
+						html.call( $(event.target), event.newValue );
+					}
+				);
 			});
 		};
 	},
 	
-	// Remove hooks once all events of this type have been unbound
 	teardown: function() {
-		$.fn.val = this._val;
-		delete this._val;
+		$.fn.html = this._html;
+		delete this._html;
 	},
 	
 	init: function( elem, name ) {

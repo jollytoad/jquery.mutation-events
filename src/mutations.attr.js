@@ -19,8 +19,8 @@ $.mutations.register({
 	
 	// Hook into jQuery when an event of this type is first bound
 	setup: function() {
-		var attr = $.attr,
-			blacklist = this.blacklist,
+		var opts = this,
+			attr = $.attr,
 			trigger = $.mutations.trigger;
 		
 		// Save the original $.attr function
@@ -34,13 +34,13 @@ $.mutations.register({
 				return prevValue;
 			}
 
-			if ( silent || blacklist[name] ) {
+			if ( silent || opts.blacklist[name] ) {
 
 				return attr(elem, name, newValue);
 				
-			} else if ( ""+newValue !== ""+prevValue ) {
+			} else if ( ""+newValue !== ""+prevValue ) { // Ensure a string comparison
 				
-				return trigger( elem, 'attr', {
+				return trigger( elem, opts.type, {
 						attrName: name,
 						prevValue: prevValue,
 						newValue: newValue === "" ? undefined : newValue
@@ -63,7 +63,10 @@ $.mutations.register({
 	init: function( elem, name ) {
 		var value = this._attr(elem);
 		if ( value !== undefined ) {
-			$.trigger($.mutations.event('attr', { attrName: name, newValue: value }), undefined, elem);
+			$.event.trigger(
+				$.mutations.event(this.type, { attrName: name, newValue: value, attrChange: $.mutations.INIT }),
+				undefined, elem
+			);
 		}	
 	}
 });

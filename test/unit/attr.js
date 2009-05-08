@@ -1,3 +1,10 @@
+
+if ( typeof fireunit === "object" ) {
+        QUnit.log = fireunit.ok;
+        QUnit.done = fireunit.testDone;
+}
+
+
 module("attr");
 
 test("get", function() {

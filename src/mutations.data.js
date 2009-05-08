@@ -19,9 +19,9 @@ $.mutations.register({
 	
 	// Hook into jQuery when an event of this type is first bound
 	setup: function() {
-		var data = $.data,
+		var opts = this,
+			data = $.data,
 			removeData = $.removeData,
-			blacklist = this.blacklist,
 			trigger = $.mutations.trigger;
 		
 		// Save the original $.data function
@@ -36,13 +36,13 @@ $.mutations.register({
 				return prevValue;
 			}
 
-			if ( silent || blacklist[name] ) {
+			if ( silent || opts.blacklist[name] ) {
 
 				return data(elem, name, newValue);
 				
 			} else if ( newValue !== prevValue ) {
 				
-				return trigger( elem, 'data',
+				return trigger( elem, opts.type,
 					{ attrName: name, prevValue: prevValue, newValue: newValue },
 					function( event ) {
 						data( event.target, event.attrName, event.newValue );
@@ -56,7 +56,7 @@ $.mutations.register({
 				return removeData( elem, name );
 			}
 
-			return trigger( elem, 'data',
+			return trigger( elem, this.type,
 				{ attrName: name, prevValue: data(elem, name), attrChange: $.mutations.REMOVAL },
 				function(event) {
 					if ( event.attrChange === $.mutations.REMOVAL ) {
