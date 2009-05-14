@@ -1,5 +1,5 @@
 /*
- * jQuery.attr Mutation Events @VERSION
+ * jQuery.attr Mutation Events @VERSION (@DATE)
  *
  * Copyright (c) 2009 Adaptavist.com Ltd
  * Dual licensed under the MIT (MIT-LICENSE.txt)
