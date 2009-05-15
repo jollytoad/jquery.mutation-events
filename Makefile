@@ -7,5 +7,8 @@ MODULES = \
 	mutations.html.js\
 	mutations.val.js
 
+OPTIONAL_MODULES = \
+	mutations.ie6css.js
+
 include build/rules.mk
 
