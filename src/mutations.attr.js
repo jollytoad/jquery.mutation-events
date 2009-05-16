@@ -60,8 +60,8 @@ $.mutations.register({
 	},
 	
 	// Force an event to be trigger - useful for initialisation
-	init: function( elem, name ) {
-		var value = this._attr(elem);
+	init: function( elem, name, defaultValue ) {
+		var value = this._attr(elem, name) || defaultValue;
 		if ( value !== undefined ) {
 			$.event.trigger(
 				$.mutations.event(this.type, { attrName: name, newValue: value, attrChange: $.mutations.INIT }),

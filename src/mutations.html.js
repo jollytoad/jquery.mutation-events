@@ -43,7 +43,7 @@ $.mutations.register({
 		delete this._html;
 	},
 	
-	init: function( elem, name ) {
+	init: function( elem ) {
 		$.event.trigger($.mutations.event(this.type, { attrChange: $.mutations.INIT }), undefined, elem);	
 	}
 });

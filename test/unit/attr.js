@@ -12,6 +12,19 @@ test("get", function() {
 	equals( jQuery("#mutations").attr("data-test"), "iamhere", "Check get attribute" );
 });
 
+test("init", function() {
+	expect(3);
+	var handler = function(event) {
+		equals( event.attrName, "data-test", "Check event.attrName" );
+		equals( event.prevName, undefined, "Check event.prevValue" );
+		equals( event.newValue, "iamhere", "Check event.newValue" );
+	};
+	jQuery("#mutations")
+		.bind("attr.@data-test", handler)
+		.initMutation("attr", "data-test")
+		.unbind("attr");
+});
+
 test("addition", function() {
 	expect(7);
 	var handler = function(event) {

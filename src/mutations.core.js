@@ -125,15 +125,15 @@ m = $.mutations = {
 
 $.fn.extend({
 	// Trigger a fake mutation event for initialisation
-	initMutation: function( type, names ) {
+	initMutation: function( type, names, defaultValue ) {
 		var self = this, opts = m.type[type];
 		
 		if ( opts && opts.init && opts.post ) {
 			if ( names === undefined ) {
-				self.each(function() { opts.init(this); });
+				self.each(function() { opts.init(this, undefined, defaultValue); });
 			} else {
 				$.each(names.split(/\s+/), function(n, name) {
-					self.each(function() { opts.init(this, name); });
+					self.each(function() { opts.init(this, name, defaultValue); });
 				});
 			}
 		}
