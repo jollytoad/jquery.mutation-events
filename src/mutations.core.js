@@ -99,11 +99,13 @@ m = $.mutations = {
 						});
 						
 						if ( proxy ) {
-							return function(event) {
+							proxy = function(event) {
 								if ( this === event.target && attrNames[event.attrName] ) {
 									return handler.apply(this, arguments);
 								}
 							};
+							proxy.type = handler.type;
+							return proxy;
 						}
 					}
 				},
