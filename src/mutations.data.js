@@ -45,7 +45,7 @@ $.mutations.register({
 				return trigger( elem, opts.type,
 					{ attrName: name, prevValue: prevValue, newValue: newValue },
 					function( event ) {
-						data( event.target, event.attrName, event.newValue );
+						return data( event.target, event.attrName, event.newValue );
 					}
 				);
 			}

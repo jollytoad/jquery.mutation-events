@@ -46,7 +46,7 @@ $.mutations.register({
 						newValue: newValue === "" ? undefined : newValue
 					},
 					function( event ) {
-						attr( event.target, event.attrName, event.newValue );
+						return attr( event.target, event.attrName, event.newValue );
 					}
 				);
 			}

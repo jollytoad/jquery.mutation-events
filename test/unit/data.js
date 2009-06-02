@@ -22,3 +22,14 @@ test("modification", function() {
 	bound.unbind("data");
 });
 
+test("return value", function() {
+	expect(2);
+	
+	equals( jQuery.data(document.getElementById('mutations'), 'test', "one"), "one", 'Value returned' );
+	
+	var bound = jQuery("#mutations").bind('data.@test', function() {});
+	
+	equals( jQuery.data(document.getElementById('mutations'), 'test', "two"), "two", 'Value returned' );
+	
+	bound.unbind('data');
+});
