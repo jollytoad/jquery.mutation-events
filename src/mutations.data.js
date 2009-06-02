@@ -52,11 +52,11 @@ $.mutations.register({
 		};
 		
 		$.removeData = function( elem, name, silent ) {
-			if ( silent || blacklist[name] ) {
+			if ( silent || opts.blacklist[name] ) {
 				return removeData( elem, name );
 			}
 
-			return trigger( elem, this.type,
+			return trigger( elem, opts.type,
 				{ attrName: name, prevValue: data(elem, name), attrChange: $.mutations.REMOVAL },
 				function(event) {
 					if ( event.attrChange === $.mutations.REMOVAL ) {
