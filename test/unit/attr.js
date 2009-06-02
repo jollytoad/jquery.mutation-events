@@ -16,7 +16,7 @@ test("init", function() {
 	expect(3);
 	var handler = function(event) {
 		equals( event.attrName, "data-test", "Check event.attrName" );
-		equals( event.prevName, undefined, "Check event.prevValue" );
+		equals( event.prevValue, undefined, "Check event.prevValue" );
 		equals( event.newValue, "iamhere", "Check event.newValue" );
 	};
 	jQuery("#mutations")
