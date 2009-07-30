@@ -1,4 +1,4 @@
-PACKAGE = jquery-mutations
+PACKAGE = jquery.mutations
 
 MODULES = \
 	mutations.core.js\
