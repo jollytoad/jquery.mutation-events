@@ -15,7 +15,7 @@ $.mutations.register({
 	type: 'data',
 	
 	// The blacklist holds data item names that should never trigger an event
-	blacklist: {'events':true, 'handle':true, 'olddisplay':true },
+	blacklist: { 'events':true, 'handle':true, 'olddisplay':true, 'closest':true },
 	
 	// Hook into jQuery when an event of this type is first bound
 	setup: function() {
@@ -42,8 +42,11 @@ $.mutations.register({
 				
 			} else if ( newValue !== prevValue ) {
 				
-				return trigger( elem, opts.type,
-					{ attrName: name, prevValue: prevValue, newValue: newValue },
+				return trigger( elem, opts.type, {
+						attrName: name,
+						prevValue: prevValue,
+						newValue: newValue
+					},
 					function( event ) {
 						return data( event.target, event.attrName, event.newValue );
 					}
@@ -56,8 +59,11 @@ $.mutations.register({
 				return removeData( elem, name );
 			}
 
-			return trigger( elem, opts.type,
-				{ attrName: name, prevValue: data(elem, name), attrChange: $.mutations.REMOVAL },
+			return trigger( elem, opts.type, {
+					attrName: name,
+					prevValue: data(elem, name),
+					attrChange: $.mutations.REMOVAL
+				},
 				function(event) {
 					if ( event.attrChange === $.mutations.REMOVAL ) {
 						removeData( event.target, event.attrName );
@@ -76,6 +82,21 @@ $.mutations.register({
 		$.removeData = this._removeData;
 		delete this._data;
 		delete this._removeData;
+	},
+	
+	// Force an event to be trigger - useful for initialisation
+	init: function( elem, name, defaultValue ) {
+		var value = this._data(elem, name) || defaultValue;
+		if ( value !== undefined ) {
+			$.event.trigger(
+				$.mutations.event(this.type, {
+					attrName: name,
+					newValue: value,
+					attrChange: $.mutations.INIT
+				}),
+				undefined, elem
+			);
+		}
 	}
 });
 

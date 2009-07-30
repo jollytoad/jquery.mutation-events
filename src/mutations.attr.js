@@ -64,7 +64,11 @@ $.mutations.register({
 		var value = this._attr(elem, name) || defaultValue;
 		if ( value !== undefined ) {
 			$.event.trigger(
-				$.mutations.event(this.type, { attrName: name, newValue: value, attrChange: $.mutations.INIT }),
+				$.mutations.event(this.type, {
+					attrName: name,
+					newValue: value,
+					attrChange: $.mutations.INIT
+				}),
 				undefined, elem
 			);
 		}	
