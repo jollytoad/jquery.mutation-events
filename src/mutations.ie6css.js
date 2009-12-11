@@ -1,5 +1,5 @@
 /*
- * jQuery IE6-CSS @VERSION (@DATE)
+ * jQuery IE6-CSS @VERSION
  *
  * Copyright (c) 2009 Adaptavist.com
  * Dual licensed under the MIT (MIT-LICENSE.txt)
