@@ -88,7 +88,7 @@ m = $.mutations = {
 					// If any namespaces are given prefixed with @ then limit
 					// the handler to the bound element and attrNames specified
 					// by the @-prefixed names.
-					if ( namespaces.length ) {
+					if ( typeof( namespaces ) != 'undefined' && namespaces.length ) {
 						var attrNames = {}, proxy;
 						
 						$.each(namespaces, function() {
